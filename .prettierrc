@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+  "javascript.updateImportsOnFileMove.enabled": "always"
+}
