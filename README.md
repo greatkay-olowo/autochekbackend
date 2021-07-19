@@ -1,73 +1,147 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# AutoChek Technology Assessment - Frontend & Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Problem Definition
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+We want to design a system that can tell us the distance between our location and some other
+locations which we expect to be supplied to us.
 
-## Description
+### Interview Task
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+We need to design a RESTful API which can collect the information on the different locations for us and also determine the distance between the locations and a configurable location which can be changed or supplied. The formula for calculating distance between two points can be gotten here https://en.wikipedia.org/wiki/Great-circle_distance.
 
-## Installation
+### Data Model
 
-```bash
-$ npm install
+Define a set of data models that include
+
+- A location entity with at least the following structure, you can add more to it at your discretion
+- Id
+- Location name
+- Description
+- Website (Optional)
+- Phone
+- Contact Person
+- Coordinates
+
+You can make use of any database but we recommend PostgreSQL.
+
+### Rest API
+
+The following RESTful API must be implemented
+
+- Create new location
+- Edit Location
+- Delete Location
+- Fetch All Locations
+- Fetch Specific Location
+- Calculate distance
+
+### Languages and Frameworks
+
+This task should be completed using
+
+- NestJs Framework
+- The data model should also be defined using Grpc (This is optional but using it will earn you extra points)
+- An ORM like TypeORM can also be used
+
+## API Reference
+
+#### Get all locations
+
+```http
+  GET /
 ```
 
-## Running the app
+#### Get a location
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```http
+  GET /${location}
 ```
 
-## Test
+| Parameter  | Type     | Description                             |
+| :--------- | :------- | :-------------------------------------- |
+| `location` | `string` | **Required**. name of location to fetch |
 
-```bash
-# unit tests
-$ npm run test
+#### Add a location
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```http
+  POST /
 ```
 
-## Support
+| Parameter      | Type     | Description                                                         |
+| :------------- | :------- | :------------------------------------------------------------------ |
+| `locationName` | `string` | **Required**. name of location. e.g. Lagos                          |
+| `description`  | `string` | **Required**. location description.                                 |
+| `website`      | `string` | **Optional**                                                        |
+| `phone`        | `string` | **Required**                                                        |
+| `person`       | `string` | **Required**                                                        |
+| `coordinateX`  | `number` | **Required**. X part of the cordinates to be added to the database. |
+| `coordinateY`  | `number` | **Required**. Y part of the cordinates to be added to the database. |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Edit a location
 
-## Stay in touch
+```http
+  PUT /${location}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Parameter  | Type     | Description                             |
+| :--------- | :------- | :-------------------------------------- |
+| `location` | `string` | **Required**. name of location to fetch |
 
-## License
+Body
+| `locationName` | `string` | **Required**. name of location. e.g. Lagos |
+| `description` | `string` | **Required**. location description. |
+| `website` | `string` | **Optional** |
+| `phone` | `string` | **Required** |
+| `person` | `string` | **Required** |
+| `coordinateX` | `number` | **Required**. X part of the cordinates to be added to the database. |
+| `coordinateY` | `number` | **Required**. Y part of the cordinates to be added to the database. |
 
-Nest is [MIT licensed](LICENSE).
+#### Delete a location
+
+```http
+  DELETE /${location}
+```
+
+| Parameter  | Type     | Description                             |
+| :--------- | :------- | :-------------------------------------- |
+| `location` | `string` | **Required**. name of location to fetch |
+
+#### Calculate distance between a location and your own location
+
+```http
+  POST /calculate/${location}
+```
+
+| Parameter  | Type     | Description                             |
+| :--------- | :------- | :-------------------------------------- |
+| `location` | `string` | **Required**. name of location to fetch |
+
+## Tech Stack
+
+**Server:** Nestjs, Axios, Class-Validator, MondoDB, Mongoose
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/greatkay-olowo/autochekbackend.git
+```
+
+Go to the project directory
+
+```bash
+  cd autochekbackend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start:dev
+```
